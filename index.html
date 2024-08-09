@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Onsen UI App</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/onsenui/css/onsenui.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/onsenui/css/onsen-css-components.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/onsenui/js/onsenui.min.js"></script>
+  <link rel="manifest" href="manifest.json">
+  <script>
+    document.addEventListener('init', function(event) {
+      const page = event.target;
+
+      // Home page logic
+      if (page.matches('#home')) {
+        console.log('Home page initialized');
+        const homeButtonPage2 = page.querySelector('#go-to-page2');
+        homeButtonPage2.addEventListener('click', function() {
+          document.querySelector('ons-tabbar').setActiveTab('page2.html');
+        });
+        const homeButtonPage3 = page.querySelector('#go-to-page3');
+        homeButtonPage3.addEventListener('click', function() {
+          document.querySelector('ons-tabbar').setActiveTab('page3.html');
+        });
+      }
+
+      // Page 2 logic
+      else if (page.matches('#page2')) {
+        console.log('Page 2 initialized');
+        const page2ButtonPage3 = page.querySelector('#go-to-page3');
+        page2ButtonPage3.addEventListener('click', function() {
+          document.querySelector('ons-tabbar').setActiveTab('page3.html');
+        });
+        const page2ButtonHome = page.querySelector('#back-to-home');
+        page2ButtonHome.addEventListener('click', function() {
+          document.querySelector('ons-tabbar').setActiveTab('home.html');
+        });
+      }
+
+      // Page 3 logic
+      else if (page.matches('#page3')) {
+        console.log('Page 3 initialized');
+        const submitButton = page.querySelector('#submit-form');
+        submitButton.addEventListener('click', function() {
+          const name = page.querySelector('ons-input[placeholder="Name"]').value;
+          const email = page.querySelector('ons-input[placeholder="Email"]').value;
+          const message = page.querySelector('ons-textarea[placeholder="Message"]').value;
+          console.log('Form submitted:', { name, email, message });
+        });
+      }
+    });
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js').then((registration) => {
+          console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        }).catch((error) => {
+          console.log('ServiceWorker registration failed: ', error);
+        });
+      });
+    }
+  </script>
+</head>
+<body>
+  <ons-tabbar swipeable>
+    <ons-tab label="Home" icon="md-home" page="home.html" active></ons-tab>
+    <ons-tab label="Page 2" icon="md-info" page="page2.html"></ons-tab>
+    <ons-tab label="Page 3" icon="md-settings" page="page3.html"></ons-tab>
+  </ons-tabbar>
+  
+  <!-- Include the templates here -->
+  <template id="home.html">
+    <ons-page id="home">
+      <ons-toolbar>
+        <div class="center">Home</div>
+      </ons-toolbar>
+      <div style="text-align: center; padding: 20px;">
+        <ons-button id="go-to-page2">Go to Page 2</ons-button>
+        <br><br>
+        <ons-button id="go-to-page3">Go to Page 3</ons-button>
+      </div>
+    </ons-page>
+  </template>
+
+  <template id="page2.html">
+    <ons-page id="page2">
+      <ons-toolbar>
+        <div class="center">Page 2</div>
+      </ons-toolbar>
+      <div style="text-align: center; padding: 20px;">
+        <ons-card>
+          <div class="card-title">Page 2 Card</div>
+          <div class="card-content">
+            <p>This is Page 2 of your Onsen UI app.</p>
+          </div>
+        </ons-card>
+        <ons-button id="go-to-page3">Go to Page 3</ons-button>
+        <br><br>
+        <ons-button id="back-to-home">Back to Home</ons-button>
+        <br><br>
+        <ons-list>
+          <ons-list-header>Options</ons-list-header>
+          <ons-list-item>Option 1</ons-list-item>
+          <ons-list-item>Option 2</ons-list-item>
+        </ons-list>
+      </div>
+    </ons-page>
+  </template>
+
+  <template id="page3.html">
+    <ons-page id="page3">
+      <ons-toolbar>
+        <div class="center">Page 3</div>
+      </ons-toolbar>
+      <div class="content">
+        <ons-card class="contact-card">
+          <div class="card-title">Contact Us</div>
+          <div class="card-content">
+            <ons-form>
+              <ons-input placeholder="Name" float></ons-input>
+              <br>
+              <ons-input placeholder="Email" type="email" float></ons-input>
+              <br>
+              <ons-textarea placeholder="Message" float></ons-textarea>
+              <br>
+              <ons-button id="submit-form" class="submit-button">Submit</ons-button>
+            </ons-form>
+          </div>
+        </ons-card>
+  
+        <ons-list class="contact-list">
+          <ons-list-header>Contact Details</ons-list-header>
+          <ons-list-item>
+            <ons-icon icon="md-account-circle" size="24px" class="list-icon"></ons-icon>
+            <span class="list-item__title">John Doe</span>
+          </ons-list-item>
+          <ons-list-item>
+            <ons-icon icon="md-phone" size="24px" class="list-icon"></ons-icon>
+            <span class="list-item__title">+1 (555) 123-4567</span>
+          </ons-list-item>
+          <ons-list-item>
+            <ons-icon icon="md-email" size="24px" class="list-icon"></ons-icon>
+            <span class="list-item__title">support@example.com</span>
+          </ons-list-item>
+        </ons-list>
+  
+        <br>
+        
+      </div>
+      <style>
+        ons-page {
+          background-color: #f8f8f8;
+        }
+  
+        .content {
+          padding: 20px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+  
+        .contact-card {
+          width: 100%;
+          max-width: 500px;
+          margin-bottom: 20px;
+        }
+  
+        .card-title {
+          font-size: 24px;
+          font-weight: bold;
+          text-align: center;
+          margin: 10px 0;
+        }
+  
+        .card-content {
+          padding: 15px;
+        }
+  
+        ons-input, ons-textarea {
+          width: calc(100% - 40px);
+          margin: 10px;
+        }
+  
+        .submit-button {
+          background-color: #007bff;
+          color: white;
+          border: none;
+          font-size: 16px;
+        }
+  
+        .submit-button:active {
+          background-color: #0056b3;
+        }
+  
+        .contact-list {
+          width: 100%;
+          max-width: 500px;
+          margin-bottom: 20px;
+        }
+  
+        ons-list-header {
+          font-size: 18px;
+          font-weight: bold;
+          background-color: #e9ecef;
+          text-align: center;
+        }
+  
+        .list-item__title {
+          font-size: 16px;
+          margin-left: 10px;
+        }
+  
+        .list-icon {
+          color: #007bff;
+        }
+  
+        .back-button {
+          width: 100%;
+          max-width: 500px;
+          background-color: #6c757d;
+          color: white;
+          border: none;
+        }
+  
+        .back-button:active {
+          background-color: #5a6268;
+        }
+        .list-item__center{
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+          align-items: flex-start;
+        }
+      </style>
+    </ons-page>
+  </template>
+</body>
+</html>
